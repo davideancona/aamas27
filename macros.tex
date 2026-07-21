@@ -61,9 +61,9 @@
 \newcommand{\plusop}[1]{{{#1}{+}}}
 \newcommand{\optop}[1]{{{#1}{?}}}
 \newcommand{\predSym}{\term{p}}
-\newcommand{\var}{\term{x}}
-\newcommand{\avar}{\term{y}}
-\newcommand{\yavar}{\term{z}}
+\newcommand{\var}{x}
+\newcommand{\avar}{y}
+\newcommand{\yavar}{z}
 \newcommand{\varSet}{\ensuremath{\mathcal{X}}}
 \newcommand{\predSet}{\ensuremath{\Pi}}
 \newcommand{\existOp}[3]{\exists{#1}{:}{#2}{.}{#3}}
@@ -125,7 +125,11 @@
 \newcommand{\cts}{\nonterm{S}} % constraint sequence (conjunction)
 \newcommand{\ct}{\ensuremath{c}} % single constraint
 \newcommand{\ev}{\ensuremath{\upsilon}}
-\newcommand{\solve}{\ensuremath{\mathit{solve}}} % solver function
+\newcommand{\res}{\ensuremath{\mathit{resolve}}} % resolver function for event predicates (or types)
+\newcommand{\sol}{\ensuremath{\mathit{solve}}} % solver function for constraints
+\newcommand{\splt}{\ensuremath{\mathit{split}}} % syntactic function to split constraints
+\newcommand{\false}{\ensuremath{\mathit{false}}}
+
 
 %ABP example
 \newcommand{\snd}[1]{\term{snd{{#1}}}}

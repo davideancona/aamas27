@@ -14,7 +14,7 @@
 \begin{figure}
  $$
   \begin{array}{c}
-   \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\solve(\ev,\atom)=\cts}                                          \\[4ex]
+   \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\res(\ev,\atom)=\cts}                                            \\[4ex]
    \Rule{l-cat}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_0\catop\re_1}{}\quad
    \Rule{r-cat}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_1}{\hasEps{\re_0}=\eps} \\[4ex]
    \Rule{l-or}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\orop\re_1\parDer{\ev,\cts}\re'_0}{} \quad
@@ -22,7 +22,9 @@
    \Rule{star}{\re\parDer{\ev,\cts}\re'}{\starop{\re}\parDer{\ev,\cts}\re'\catop\starop{\re}}{}             \\[4ex]
    \Rule{l-shf}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\shuffleop\re_1\parDer{\ev,\cts}\re'_0\shuffleop\re_1}{} \qquad
    \Rule{r-shf}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\shuffleop\re_1\parDer{\ev,\cts}\re_0\shuffleop\re'_1}{} \\[4ex]
-   \Rule{ex}{\re\parDer{\ev,\cts'}\re'}{\existOp{\var}{\cts}{\re}\parDer{\ev,\cts}\existOp{\var}{\cts}{\re'}}{}
+   \Rule{ex}{\re\parDer{\ev,\cts'}\re'}{\existOp{\var}{\cts}{\re}\parDer{\ev,\cts''}\existOp{\var}{\cts,\cts_\var}{\re'}}{\begin{array}{c}\splt(\var,\cts')=\cts_\var;\cts'' \\
+                                                                                                                            solve(\cts,\cts_\var)\neq\false
+                                                                                                                           \end{array}}
   \end{array}
  $$
  \caption{Transition system defining the partial derivatives of REs}
