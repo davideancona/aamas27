@@ -1,0 +1,154 @@
+%abbreviations
+\newcommand{\wrt}{w.~r.~t.}
+\newcommand{\st}{s.~t.}
+
+%environments
+
+% \newtheorem{definition}{Definition}[section]
+% \newtheorem{theorem}[definition]{Theorem}
+% \newtheorem{lemma}[definition]{Lemma}
+% \newtheorem{corollary}[definition]{Corollary}
+% \newtheorem{proposition}[definition]{Proposition}
+
+%matematiche
+\newcommand{\dom}[1]{\mathit{dom}(#1)}
+\newcommand{\Tuple}[1]    {({#1})}
+\newcommand{\Pair}[2]     {\Tuple{{#1},{#2}}}
+%\newcommand{\Triple}[3]     {\Tuple{{#1},{#2},{#3}}}
+%\newcommand{\fv}[1]{\textit{fv}(#1)}
+%\newcommand{\vars}[1]{\textit{vars}(#1)}
+\newcommand{\simpleRule}[3]{\displaystyle\frac{#1}{#2}\ \begin{array}{l} #3 \end{array}}
+\newcommand{\rn}[1]{\textsc{({#1})}} %% rule name
+\newcommand{\Rule}[4]{{\tiny{\rn{#1}}}\displaystyle\frac{#2}{#3}\ \begin{array}{l} #4 \end{array}}
+\newcommand{\infeRule}[3]{\infer[\tiny\textsc{({#1})}]{#3}{#2}}
+
+%syntax
+\newenvironment{grammar}{$\begin{array}[t]{llll}}{\end{array}$}
+\newcommand{\production}[3]{#1&{:}{:}=&#2 & \mbox{{\small{#3}}}}
+\newcommand{\nlproduction}[1]{&&#1}
+\newcommand{\term}[1]{\ensuremath{\mathtt {#1}}}
+\newcommand{\nonterm}[1]{\ensuremath{\mathit {#1}}}
+\newcommand{\re}{\nonterm{e}}
+\newcommand{\reSet}{\nonterm{RE}}
+\newcommand{\reShSet}{\nonterm{RE_{\te}}}
+\newcommand{\mapmerge}{\ensuremath{\mathbin{\cup}}}
+\newcommand{\reSh}[2]{{#1}{\langle}{#2}{\rangle}}
+\newcommand{\termSet}{\nonterm{T}}
+\newcommand{\nodeSet}{\nonterm{N}}
+\newcommand{\te}{\nonterm{t}} %% term
+\newcommand{\nd}{\nonterm{n}} %% node
+\newcommand{\wdl}[1]{\vdash {#1}}
+\newcommand{\reSetShuffle}{\nonterm{RE^{\shuffleop}}}
+\newcommand{\reSetAnd}{\nonterm{RE^{\andop}}}
+\newcommand{\reSetExist}{\nonterm{RE^{\exists}}}
+\newcommand{\reSetPrefix}{\nonterm{RE^{!}}}
+\newcommand{\eps}{\term{\epsilon}}
+\newcommand{\none}{\term{0}}
+\newcommand{\symAlph}{\Sigma}
+\newcommand{\sym}{\term{a}}
+\newcommand{\asym}{\term{b}}
+\newcommand{\yasym}{\term{c}}
+\newcommand{\all}{\term{1}}
+\newcommand{\orop}{\mathbin{+}}
+\newcommand{\shuffleop}{\mathbin{||}}
+\newcommand{\catop}{{\,}}
+\newcommand{\strcons}{\mathbin{:}}
+\newcommand{\strcatop}{\mathbin{\cdot}}
+\newcommand{\strshuffleop}{\shuffleop}
+\newcommand{\andop}{\mathbin{\&}}
+\newcommand{\starop}[1]{{{#1}{*}}}
+\newcommand{\prefixop}[1]{{{#1}{!}}}
+\newcommand{\plusop}[1]{{{#1}{+}}}
+\newcommand{\optop}[1]{{{#1}{?}}}
+\newcommand{\predSym}{\term{p}}
+\newcommand{\var}{\term{x}}
+\newcommand{\avar}{\term{y}}
+\newcommand{\yavar}{\term{z}}
+\newcommand{\varSet}{\ensuremath{\mathcal{X}}}
+\newcommand{\predSet}{\ensuremath{\Pi}}
+\newcommand{\existOp}[3]{\exists{#1}{:}{#2}{.}{#3}}
+\newcommand{\eventTerm}{\nonterm{t}}
+\newcommand{\atom}{\nonterm{a}}
+%derivative
+\newcommand{\der}[1]{\xrightarrow{#1}}
+\newcommand{\hasEps}[1]{\nu({#1})}
+\newcommand{\conj}{\mathbin{\mathsf{and}}}
+\newcommand{\disj}{\mathbin{\mathsf{or}}}
+\newcommand{\noDetDer}[2]{\xhookrightarrow{#1}_{#2}}
+\newcommand{\parDer}[1]{\xrightharpoonup{#1}}
+\newcommand{\pmap}{\rho}
+\newcommand{\rch}[1]{\mathit{from}(#1)}
+\newcommand{\card}[1]{{\mid}{#1}{\mid}}
+\newcommand{\finParMap}{\xrightharpoonup{\mathrm{fin}}}
+\newcommand{\noParDer}[1]{\centernot{\parDer{#1}}}
+\newcommand{\derSet}[1]{\xRightarrow{#1}}
+\newcommand{\emptyPath}{\lambda}
+\newcommand{\pathCons}{\mathbin{:}}
+\newcommand{\tpath}{p} %% generic tree path
+\newcommand{\pathEl}{b} %% generic path element
+\newcommand{\genIncSym}[1]{\Delta_{#1}}
+\newcommand{\genIncFun}[1]{\genIncSym{\metric}({#1})}
+\newcommand{\incSym}{\genIncSym{\heightSym}}
+\newcommand{\incSymSize}{\genIncSym{\sizeSym}}
+\newcommand{\incFun}[1]{{\incSym}({#1})}
+\newcommand{\incFunSize}[1]{{\incSymSize}({#1})}
+\newcommand{\incConst}{\mathit{k}}
+\newcommand{\metric}{\ensuremath{\mu}}
+\newcommand{\tmetric}[1]{\metric({#1})}
+\newcommand{\diffSet}[2]{D_{#1}({#2})}
+\newcommand{\metricSet}[2]{M_{#1}({#2})}
+
+\newcommand{\heightSym}{h}
+\newcommand{\sizeSym}{s}
+\newcommand{\theight}[1]{\heightSym({#1})} %% tree height
+\newcommand{\tsize}[1]{\sizeSym({#1})} %% tree height
+
+\newcommand{\gtSym}{\mathit{gt}}
+\newcommand{\gtFun}[2]{\gtSym({#1},{#2})}
+\newcommand{\geqSym}{\mathit{geq}}
+\newcommand{\geqFun}[2]{\geqSym({#1},{#2})}
+
+%semantics
+\newcommand{\word}{\nonterm{w}}
+\newcommand{\emptyWord}{\lambda}
+\newcommand{\sem}[1]{\left\llbracket{#1}\right\rrbracket}
+\newcommand{\opSem}[2]{\left\llbracket{#1}\right\rrbracket_{#2}}
+\newcommand{\wordUniv}{\starop{\symAlph}}
+\newcommand{\first}[1]{\nonterm{first}(#1)}
+\newcommand{\lang}{\nonterm{L}}
+\newcommand{\interp}{\ensuremath{\mathcal{I}}}
+\newcommand{\interpOf}[1]{\ensuremath{\interp({#1})}}
+\newcommand{\subs}[3]{\ensuremath{{#1}[{#2}\mapsto{#3}]}}
+\newcommand{\vset}{\ensuremath{\mathcal{V}}} % set of all values
+\newcommand{\cset}{\ensuremath{\mathcal{C}}} % set of all constraints
+\newcommand{\val}{\ensuremath{v}} % value
+\newcommand{\cts}{\nonterm{S}} % constraint sequence (conjunction)
+\newcommand{\ct}{\ensuremath{c}} % single constraint
+\newcommand{\ev}{\ensuremath{\upsilon}}
+\newcommand{\solve}{\ensuremath{\mathit{solve}}} % solver function
+
+%ABP example
+\newcommand{\snd}[1]{\term{snd{{#1}}}}
+\newcommand{\ack}[1]{\term{ack{{#1}}}}
+
+%existential quantification
+\newcommand{\opn}{\term{opn}}
+\newcommand{\acc}{\term{acc}}
+\newcommand{\cls}{\term{cls}}
+\newcommand{\nopen}{\term{noOpn}}
+\newcommand{\nopenclose}{\term{noOpnCls}}
+\newcommand{\nodupopen}{\term{noDupOpn}}
+\newcommand{\true}{\term{true}}
+\newcommand{\opCl}{\term{OpnCls}}
+\newcommand{\noOddDup}{\term{NoOddDup}}
+\newcommand{\noEvenDup}{\term{NoEvenDup}}
+\newcommand{\noDup}{\term{NoDup}}
+\newcommand{\files}{\term{Files}}
+\newcommand{\open}{\term{Open}}
+\newcommand{\noOpen}{\term{NoOpn}}
+\newcommand{\noDupOpen}{\term{NoDupOpn}}
+\newcommand{\noOpenClose}{\term{NoOpnCls}}
+\newcommand{\noOddDupFixed}{\term{NoOddDupFixed }}
+\newcommand{\noEvenDupFixed}{\term{NoEvenDupFixed}}
+\newcommand{\noDupFixed}{\term{NoDupFixed}}
+\newcommand{\filesFixed}{\term{FilesFixed}}

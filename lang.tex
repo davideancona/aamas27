@@ -1,0 +1,31 @@
+\section{Language definition}\label{sec:lang}
+
+\begin{center}
+ \begin{small}
+  \begin{grammar}
+   \production{\re}{\none \mid \eps \mid \atom \mid \re_0\catop\re_1 \mid \re_0\orop\re_1 \mid \starop{\re}\mid \re_0\shuffleop\re_1 \mid \var \mid \existOp{\var}{\cts}{\re}}{} \\
+   \production{\cts}{\ct_1,\ldots,\ct_n}{\hspace*{-5em}with $\ct_1,\ldots,\ct_n\in\cset$} \\
+   \production{\atom}{\predSym(\eventTerm_1,...\eventTerm_n)}{\hspace*{-5em}with $\predSym\in\predSet$} \\
+   \production{\eventTerm}{\val \mid \var}{\hspace*{-5em}with $\val\in\vset, \var\in\varSet$} \\
+  \end{grammar}
+ \end{small}
+\end{center}
+
+\begin{figure}
+ $$
+  \begin{array}{c}
+   \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\solve(\ev,\atom)=\cts}                                          \\[4ex]
+   \Rule{l-cat}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_0\catop\re_1}{}\quad
+   \Rule{r-cat}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_1}{\hasEps{\re_0}=\eps} \\[4ex]
+   \Rule{l-or}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\orop\re_1\parDer{\ev,\cts}\re'_0}{} \quad
+   \Rule{r-or}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\orop\re_1\parDer{\ev,\cts}\re'_1}{} \quad
+   \Rule{star}{\re\parDer{\ev,\cts}\re'}{\starop{\re}\parDer{\ev,\cts}\re'\catop\starop{\re}}{}             \\[4ex]
+   \Rule{l-shf}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\shuffleop\re_1\parDer{\ev,\cts}\re'_0\shuffleop\re_1}{} \qquad
+   \Rule{r-shf}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\shuffleop\re_1\parDer{\ev,\cts}\re_0\shuffleop\re'_1}{} \\[4ex]
+   \Rule{ex}{\re\parDer{\ev,\cts'}\re'}{\existOp{\var}{\cts}{\re}\parDer{\ev,\cts}\existOp{\var}{\cts}{\re'}}{}
+  \end{array}
+ $$
+ \caption{Transition system defining the partial derivatives of REs}
+ \label{fig:parDer}
+\end{figure}
+
