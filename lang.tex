@@ -1,15 +1,19 @@
 \section{Language definition}\label{sec:lang}
 
 \begin{center}
- \begin{small}
-  \begin{grammar}
-   \production{\re}{\none \mid \eps \mid \atom \mid \re_0\catop\re_1 \mid \re_0\orop\re_1 \mid \starop{\re}\mid \re_0\shuffleop\re_1 \mid \var \mid \existOp{\var}{\cts}{\re}}{} \\
-   \production{\cts}{\ct_1,\ldots,\ct_n}{\hspace*{-5em}with $\ct_1,\ldots,\ct_n\in\cset$} \\
-   \production{\atom}{\predSym(\eventTerm_1,...\eventTerm_n)}{\hspace*{-5em}with $\predSym\in\predSet$} \\
-   \production{\eventTerm}{\val \mid \var}{\hspace*{-5em}with $\val\in\vset, \var\in\varSet$} \\
-  \end{grammar}
- \end{small}
+ %  \begin{small}
+ \begin{grammar}
+  \production{\re}{\none \mid \eps \mid \atom \mid \re_0\catop\re_1 \mid \re_0\orop\re_1 \mid \starop{\re}\mid \re_0\shuffleop\re_1 \mid \var \mid \existOp{\var}{\cts}{\re}}{} \\
+  %    \production{\cts}{\ct_1,\ldots,\ct_n}{\hspace*{-5em}with $\ct_1,\ldots,\ct_n\in\cset$} \\
+  \production{\atom}{\predSym(\eventTerm_1,...\eventTerm_n)}{} \\
+  \production{\eventTerm}{\val \mid \var}{} \\
+ \end{grammar}
+ %  \end{small}
 \end{center}
+with $\cts\in \finPart(\cset)$, $\predSym\in\predSet$, $\val\in\vset, \var\in\varSet$
+
+In the existential quantification $\existOp{\var}{\cts}{\re}$, the variable $\var$
+is subject to the finite set of constraints $\cts$ ranging over a fixed universe of constraints $\cset$. We assume the function $\fv : \cset\rightarrow\finPart(\varSet)$ associating with each constraint $\ct$ the finite set of variables $\fv(\ct)$ occurring in it.
 
 \begin{figure}
  $$
@@ -30,4 +34,6 @@
  \caption{Transition system defining the partial derivatives of REs}
  \label{fig:parDer}
 \end{figure}
+
+In \rn{ex}, the auxiliary function $\splt : \varSet\times\finPart(\cset)\rightarrow\finPart(\cset)\times\finPart(\cset)$ splits the set of constraints $\cts'$ into two sets $\cts_\var$ and $\cts''$ containing all constraints where the variable $\var$ occurs, and all other constraints, respectively. That is, $\splt(\var,\cts')=\{\ct \in \cts' \mid \var \in \fv(\ct)\};\{\ct \in \cts' \mid \var \notin \fv(\ct)  \}$.
 
