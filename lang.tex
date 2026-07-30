@@ -18,26 +18,42 @@ is subject to the finite set $\cts$ of constraints  ranging over a fixed univers
 \begin{figure}
  $$
   \begin{array}{c}
-   \hasEps{\eps}=\hasEps{\starop{\re_0}}=\true                                                                                                                                                       \\                                                                                                      \hasEps{\none}=\hasEps{\sym}=\hasEps{\var}=\false \\
-   \hasEps{\re_0\catop\re_1}=\hasEps{\re_0\andop\re_1}=\hasEps{\re_0}\conj\hasEps{\re_1}                                                                                                             \\
-   \hasEps{\re_0\orop\re_1}=\hasEps{\re_0}\disj\hasEps{\re_1}                                                                                                                                        \\ \hasEps{\existOp{\var}{\cts}{\re}}=\hasEps{\re} \\[4ex]
-   \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\res(\ev,\atom)=\cts}                                                                                                                                     \\[4ex]
+   \hasEps{\eps}=\hasEps{\starop{\re_0}}=\true                                                              \\                                                                                                      \hasEps{\none}=\hasEps{\sym}=\hasEps{\var}=\false \\
+   \hasEps{\re_0\catop\re_1}=\hasEps{\re_0\andop\re_1}=\hasEps{\re_0}\conj\hasEps{\re_1}                    \\
+   \hasEps{\re_0\orop\re_1}=\hasEps{\re_0}\disj\hasEps{\re_1}                                               \\ \hasEps{\existOp{\var}{\cts}{\re}}=\hasEps{\re} \\[4ex]
+   \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\res(\ev,\atom)=\cts}                                            \\[4ex]
    \Rule{l-cat}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_0\catop\re_1}{}\quad
-   \Rule{r-cat}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_1}{\hasEps{\re_0}=\eps}                                                                                          \\[4ex]
+   \Rule{r-cat}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_1}{\hasEps{\re_0}=\eps} \\[4ex]
    \Rule{l-or}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\orop\re_1\parDer{\ev,\cts}\re'_0}{} \quad
    \Rule{r-or}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\orop\re_1\parDer{\ev,\cts}\re'_1}{} \quad
-   \Rule{star}{\re\parDer{\ev,\cts}\re'}{\starop{\re}\parDer{\ev,\cts}\re'\catop\starop{\re}}{}                                                                                                      \\[4ex]
+   \Rule{star}{\re\parDer{\ev,\cts}\re'}{\starop{\re}\parDer{\ev,\cts}\re'\catop\starop{\re}}{}             \\[4ex]
    \Rule{l-shf}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\shuffleop\re_1\parDer{\ev,\cts}\re'_0\shuffleop\re_1}{} \qquad
-   \Rule{r-shf}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\shuffleop\re_1\parDer{\ev,\cts}\re_0\shuffleop\re'_1}{}                                                                                          \\[4ex]
-   \Rule{and}{\re_0\parDer{\ev,\cts_0}\re'_0\quad\re_1\parDer{\ev,\cts_1}\re'_1}{\re_0\andop\re_1\parDer{\ev,\ctsconj{\cts_0}{\cts_1}}\re'_0\andop\re'_1}{solve(\ctsconj{\cts_0}{\cts_1})\neq\false} \\[4ex]
-   \Rule{ex}{\re\parDer{\ev,\cts'}\re'}{\existOp{\var}{\cts}{\re}\parDer{\ev,\excl{\var}{\cts'}}\existOp{\var}{\ctsconj{\cts}{\cts'}}{\re'}}{\begin{array}{c}%\splt(\var,\cts')=\cts_\var;\cts'' \\
-                                                                                                                                               solve(\ctsconj{\cts}{\cts'})\neq\false
-                                                                                                                                              \end{array}}
+   \Rule{r-shf}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\shuffleop\re_1\parDer{\ev,\cts}\re_0\shuffleop\re'_1}{} \\[4ex]
+   \Rule{and}{\re_0\parDer{\ev,\cts_0}\re'_0\quad\re_1\parDer{\ev,\cts_1}\re'_1}{\re_0\andop\re_1\parDer{\ev,\ctsconj{\cts_0}{\cts_1}}\re'_0\andop\re'_1}{%solve(\ctsconj{\cts_0}{\cts_1})\neq\false
+   }                                                                                                        \\[4ex]
+   \Rule{ex}{\re\parDer{\ev,\cts'}\re'}{\existOp{\var}{\cts}{\re}\parDer{\ev,\excl{\var}{\cts'}}\existOp{\var}{\ctsconj{\cts}{\cts'}}{\re'}}{%\begin{array}{c}%\splt(\var,\cts')=\cts_\var;\cts'' \\
+    \sol(\ctsconj{\cts}{\cts'})\neq\false
+    %\end{array}
+   }                                                                                                        \\[4ex]
+   \Rule{main}{\re\parDer{\ev,\cts}\re'}{\re\parDer{\ev}\re'}{\cts\mathbin{\equiv}\emptyset}
   \end{array}
  $$
  \caption{Transition system defining the partial derivatives of REs}
  \label{fig:parDer}
 \end{figure}
 
-In \rn{ex}, the auxiliary function $\splt : \varSet\times\finPart(\cset)\rightarrow\finPart(\cset)\times\finPart(\cset)$ splits the set of constraints $\cts'$ into two sets $\cts_\var$ and $\cts''$ containing all constraints where the variable $\var$ occurs, and all other constraints, respectively. That is, $\splt(\var,\cts')=\{\ct \in \cts' \mid \var \in \fv(\ct)\};\{\ct \in \cts' \mid \var \notin \fv(\ct)  \}$.
+In \rn{ex}, the notation $\excl{\var}{\cts'}$ denotes the subset of constraints in $\cts'$ where the variable $\var$ does not occur; that is, $\excl{\var}{\cts'}=\{\ct \in \cts' \mid \var \notin \fv(\ct)\}$.
 
+% the auxiliary function $\splt : \varSet\times\finPart(\cset)\rightarrow\finPart(\cset)\times\finPart(\cset)$ splits the set of constraints $\cts'$ into two sets $\cts_\var$ and $\cts''$ containing all constraints where the variable $\var$ occurs, and all other constraints, respectively. That is, $\splt(\var,\cts')=\{\ct \in \cts' \mid \var \in \fv(\ct)\};\{\ct \in \cts' \mid \var \notin \fv(\ct)  \}$.
+
+\subsection{Examples}
+
+\subsubsection*{Ping-pong protocol}
+
+$\evSet=\{\pingEv(n),\pongEv(n) \mid n \in \natSet\}$
+
+$\res(\ev,\pongPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pongEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
+
+$\res(\ev,\pingPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pingEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
+
+$\starop{(\existOp{\var}{\emptyset}{\existOp{\avar}{\{\var < \avar\}}{\pingPr(\var)\shuffleop\pongPr(\avar)}})}$
