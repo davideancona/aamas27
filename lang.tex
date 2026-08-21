@@ -1,19 +1,19 @@
 \section{Language definition}\label{sec:lang}
 
+The syntax of the language is defined by the following grammar, parametric in a given universe of constraints $\cset$. We assume fixed countably infinite sets of predicate symbols $\predSet$, of values $\vset$, and of variables $\varSet$, and the function $\fv : \cset\rightarrow\finPart(\varSet)$ associating with each constraint $\ct$ the finite set of variables $\fv(\ct)$ occurring in it.
 \begin{center}
  %  \begin{small}
  \begin{grammar}
-  \production{\re}{\none \mid \eps \mid \atom \mid \re_0\catop\re_1 \mid \re_0\orop\re_1 \mid \starop{\re}\mid \re_0\shuffleop\re_1 \mid \var \mid \existOp{\var}{\cts}{\re}}{} \\
+  \production{\re}{\none \mid \eps \mid \atom \mid \re_0\catop\re_1 \mid \re_0\orop\re_1 \mid \re_0\shuffleop\re_1 \mid \starop{\re}\mid \var \mid \existOp{\var}{\cts}{\re}}{} \\
   %    \production{\cts}{\ct_1,\ldots,\ct_n}{\hspace*{-5em}with $\ct_1,\ldots,\ct_n\in\cset$} \\
   \production{\atom}{\predSym(\eventTerm_1,...\eventTerm_n)}{} \\
   \production{\eventTerm}{\val \mid \var}{} \\
  \end{grammar}
  %  \end{small}
 \end{center}
-with $\cts\in \finPart(\cset)$, $\predSym\in\predSet$, $\val\in\vset, \var\in\varSet$
+with $\cts\in \finPart(\cset)$, $\predSym\in\predSet$, $\val\in\vset, \var\in\varSet$.
 
-In the existential quantification $\existOp{\var}{\cts}{\re}$, the variable $\var$
-is subject to the finite set $\cts$ of constraints  ranging over a fixed universe of constraints $\cset$. We assume the function $\fv : \cset\rightarrow\finPart(\varSet)$ associating with each constraint $\ct$ the finite set of variables $\fv(\ct)$ occurring in it.
+The constants $\none$ and $\eps$ denote the empty set and the set containing the empty trace, respectively. The atom $\atom$ denotes the set of traces consisting of a single event $\ev$, for all events $\ev$ defined by $\atom$. $\re_0\catop\re_1$, $\re_0\orop\re_1$ and $\re_0\shuffleop\re_1$ denote concatenation, union and shuffle of set of traces, respectively, while $\starop{\re}$ is the Kleene star closure of set of traces. In the existential quantification $\existOp{\var}{\cts}{\re}$, the variable $\var$ is subject to the finite set $\cts$ of constraints ranging over $\cset$.
 
 \begin{figure}
  $$
