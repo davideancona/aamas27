@@ -1,10 +1,11 @@
 \section{Language definition}\label{sec:lang}
 
-The syntax of the language is defined by the following grammar, parametric in a given universe of constraints $\cset$. We assume fixed countably infinite sets of predicate symbols $\predSet$, of values $\vset$, and of variables $\varSet$, and the function $\fv : \cset\rightarrow\finPart(\varSet)$ associating with each constraint $\ct$ the finite set of variables $\fv(\ct)$ occurring in it.
+\subsection{Syntax}
+The syntax of trace expressions $\re$ is defined by the following grammar, parametric in a given universe of constraints $\cset$. We assume fixed countably infinite sets of predicate symbols $\predSet$, of values $\vset$, and of variables $\varSet$, and the function $\fv : \cset\rightarrow\finPart(\varSet)$ associating with each constraint $\ct$ the finite set of variables $\fv(\ct)$ occurring in it.
 \begin{center}
  %  \begin{small}
  \begin{grammar}
-  \production{\re}{\none \mid \eps \mid \atom \mid \re_0\catop\re_1 \mid \re_0\orop\re_1 \mid \re_0\shuffleop\re_1 \mid \starop{\re}\mid \var \mid \existOp{\var}{\cts}{\re}}{} \\
+  \production{\re}{\none \mid \eps \mid \atom \mid \re_0\catop\re_1 \mid \re_0 \andop \re_1 \mid \re_0\orop\re_1 \mid \re_0\shuffleop\re_1  \mid \starop{\re}\mid \var \mid \existOp{\var}{\cts}{\re}}{} \\
   %    \production{\cts}{\ct_1,\ldots,\ct_n}{\hspace*{-5em}with $\ct_1,\ldots,\ct_n\in\cset$} \\
   \production{\atom}{\predSym(\eventTerm_1,...\eventTerm_n)}{} \\
   \production{\eventTerm}{\val \mid \var}{} \\
@@ -15,10 +16,48 @@ with $\cts\in \finPart(\cset)$, $\predSym\in\predSet$, $\val\in\vset, \var\in\va
 
 The constants $\none$ and $\eps$ denote the empty set and the set containing the empty trace, respectively. The atom $\atom$ denotes the set of traces consisting of a single event $\ev$, for all events $\ev$ defined by $\atom$. $\re_0\catop\re_1$, $\re_0\orop\re_1$ and $\re_0\shuffleop\re_1$ denote concatenation, union and shuffle of set of traces, respectively, while $\starop{\re}$ is the Kleene star closure of set of traces. In the existential quantification $\existOp{\var}{\cts}{\re}$, the variable $\var$ is subject to the finite set $\cts$ of constraints ranging over $\cset$.
 
-\begin{figure}
+Following the standard precedence rules, the Kleene star operator has higher precedence than the binary operators, while the decreasing order of precedence for the binary operators is concatenation, intersection, union, and shuffle.
+Finally, the existential quantification has the lowest precedence.
+
+In the rest of the paper, we will overline meta-symbols to denote sequences of the corresponding type, e.g., $\overline{\eventTerm}$ is an abbreviation for $\eventTerm_1,...\eventTerm_n $.
+
+
+\subsection{Denotational semantics}
+Let $\evSet$ denote a given non-empty set of events. We call \emph{trace} an element of $\evSet^*$, and denote with $\emptyTrace$ the empty trace. Furthermore, $\ev\tracecons\trace$ denotes the word where $\ev$ is the first event, and $\trace$ the rest of the trace, while $\trace\tracecatop\trace'$ denotes trace concatenation.
+
+\Cref{def:langOp} introduces the operators on trace sets, instrumental to \cref{def:sem}.
+
+\begin{definition}\label[definition]{def:langOp}
+ For all $\lang,\lang_0,\lang_1\subseteq\evSet^*$
+ \[
+  \begin{array}{l}
+   \lang_1\tracecatop\lang_2=\{\trace_1\tracecatop\trace_2\mid \trace_1\in\lang_1,\trace_2\in\lang_2\}                                                                                \\
+   \lang^0=\{\emptyTrace\}, \lang^{n+1}=\lang\tracecatop\lang^n \mbox{ for all $n\geq 0$} \quad
+   \starop{\lang} = \bigcup_{n\geq 0}\lang^n                                                                                                                                          \\
+   \emptyTrace \shuffleop \trace = \trace \shuffleop \emptyTrace = \{\trace\}                                                                                                         \\
+   (\ev_1\trace_1) \shuffleop (\ev_2\trace_2) = \{ \ev_1  \} \tracecatop (\trace_1 \traceshuffleop (\ev_2\trace_2)) \cup \{\ev_2\}\tracecatop((\ev_1\trace_1)\traceshuffleop\trace_2) \\
+   \lang_1\traceshuffleop\lang_2=\bigcup_{\trace_1\in\lang_1,\trace_2\in\lang_2}(\trace_1\traceshuffleop\trace_2)
+  \end{array}
+ \]
+\end{definition}
+\begin{definition}\label[definition]{def:sem}
+ The denotational semantics of trace expressions is defined by induction as follows:
+ \[
+  \begin{array}{l}
+   \sem{\none}=\emptyset\quad \sem{\eps}=\{\emptyTrace\} \quad \sem{\predSym(\overline{\val})}=\{\ev \mid \res(\ev,\predSym(\overline{\val}))=\emptyset\} \\
+   \sem{\re_0\catop\re_1}=\sem{\re_0}\tracecatop\sem{\re_1}                                                 \quad
+   \sem{\re_0\andop\re_1}=\sem{\re_0}\cap\sem{\re_1}                                                                                                      \\ \sem{\re_0\orop\re_1}=\sem{\re_0}\cup\sem{\re_1}                                               \quad \sem{\re_0\shuffleop\re_1}=\sem{\re_0}\traceshuffleop\sem{\re_1} \quad \sem{\starop{\re_0}}=\starop{\sem{\re_0}}\\
+   \sem{\existOp{\var}{\cts}{\re}}=\bigcup_{\val'\in\{\val\in\evSet\mid \sol(\subs{\cts}{\var}{\val})\neq\false\}}\sem{\subs{\re}{\var}{\val'}}
+  \end{array}
+ \]
+\end{definition}
+
+\subsection{Operational semantics}
+The operational semantics of trace expressions is defined in terms of partial derivatives, which are defined by the labeled transition system in \cref{fig:parDer}.
+\begin{figure*}[t]
  $$
   \begin{array}{c}
-   \hasEps{\eps}=\hasEps{\starop{\re_0}}=\true                                                              \\                                                                                                      \hasEps{\none}=\hasEps{\sym}=\hasEps{\var}=\false \\
+   \hasEps{\eps}=\hasEps{\starop{\re_0}}=\true                                                              \\                                                                                                      \hasEps{\none}=\hasEps{\ev}=\hasEps{\var}=\false \\
    \hasEps{\re_0\catop\re_1}=\hasEps{\re_0\andop\re_1}=\hasEps{\re_0}\conj\hasEps{\re_1}                    \\
    \hasEps{\re_0\orop\re_1}=\hasEps{\re_0}\disj\hasEps{\re_1}                                               \\ \hasEps{\existOp{\var}{\cts}{\re}}=\hasEps{\re} \\[4ex]
    \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\res(\ev,\atom)=\cts}                                            \\[4ex]
@@ -38,9 +77,10 @@ The constants $\none$ and $\eps$ denote the empty set and the set containing the
    \Rule{main}{\re\parDer{\ev,\cts}\re'}{\re\parDer{\ev}\re'}{\cts\mathbin{\equiv}\emptyset}
   \end{array}
  $$
- \caption{Transition system defining the partial derivatives of REs}
+ \caption{Transition system defining the partial derivatives of trace expressions}
  \label{fig:parDer}
-\end{figure}
+ \Description{Transition system defining the partial derivatives of trace expressions}
+\end{figure*}
 
 In \rn{ex}, the notation $\excl{\var}{\cts'}$ denotes the subset of constraints in $\cts'$ where the variable $\var$ does not occur; that is, $\excl{\var}{\cts'}=\{\ct \in \cts' \mid \var \notin \fv(\ct)\}$.
 
