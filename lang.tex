@@ -111,8 +111,9 @@ In \rn{ex}, the notation $\excl{\var}{\cts'}$ denotes the subset of constraints 
 
 $\evSet=\{\pingEv(n),\pongEv(n) \mid n \in \natSet\}$
 
-$\match(\ev,\pongPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pongEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
-
-$\match(\ev,\pingPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pingEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
+\begin{tabular}{l}
+ $\match(\ev,\pongPr(\eventTerm))=\{\eventTerm = n\}$ iff \\ \qquad $\ev=\pongEv(n)$ and $\sol(\{\eventTerm = n\})\neq\false$ \\
+ $\match(\ev,\pingPr(\eventTerm))=\{\eventTerm = n\}$ iff \\ \qquad$\ev=\pingEv(n)$ and $\sol(\{\eventTerm = n\})\neq\false$
+\end{tabular}
 
 $\starop{(\existOp{\var}{\emptyset}{\existOp{\avar}{\{\var < \avar\}}{\pingPr(\var)\shuffleop\pongPr(\avar)}})}$
