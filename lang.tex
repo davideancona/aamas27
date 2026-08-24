@@ -1,7 +1,7 @@
 \section{Language definition}\label{sec:lang}
 
 \subsection{Syntax}
-The syntax of trace expressions $\re$ is defined by the following grammar, parametric in a given universe of constraints $\cset$. We assume fixed countably infinite sets of predicate symbols $\predSet$, of values $\vset$, and of variables $\varSet$, and the function $\fv : \cset\rightarrow\finPart(\varSet)$ associating with each constraint $\ct$ the finite set of variables $\fv(\ct)$ occurring in it.
+The syntax of trace expressions $\re$ is defined by the following grammar, parametric in a given universe of constraints $\cset$. We assume fixed countably infinite sets of predicate symbols $\predSet$, of values $\vset$, and of variables $\varSet$.
 \begin{center}
  %  \begin{small}
  \begin{grammar}
@@ -13,6 +13,8 @@ The syntax of trace expressions $\re$ is defined by the following grammar, param
  %  \end{small}
 \end{center}
 with $\cts\in \finPart(\cset)$, $\predSym\in\predSet$, $\val\in\vset, \var\in\varSet$.
+We omit the standard definitions of free variables $\fv(\re)$, $\fv(\atom)$, and $\fv(\cts)$,
+and the corresponding definition of variable substitution $\subs{\re}{\var}{\val}$, $\subs{\atom}{\var}{\val}$ and $\subs{\cts}{\var}{\val}$. These definitions assume that the considered notion of constraint is equipped with the corresponding definition of set of variables occurring in a constraint, and of substitution of a variable with a value in a constraint, \st $\fv(\subs{\ct}{\var}{\val})=\fv(\ct)\setminus\{\var\}$, and $\subs{\ct}{\var}{\val}=\ct$ if $\var\notin\fv(\ct)$, for all $\ct\in\cset$, $\var\in\varSet$ and $\val\in\vset$.
 
 The constants $\none$ and $\eps$ denote the empty set and the set containing the empty trace, respectively. The atom $\atom$ denotes the set of traces consisting of a single event $\ev$, for all events $\ev$ defined by $\atom$. $\re_0\catop\re_1$, $\re_0\orop\re_1$ and $\re_0\shuffleop\re_1$ denote concatenation, union and shuffle of set of traces, respectively, while $\starop{\re}$ is the Kleene star closure of set of traces. In the existential quantification $\existOp{\var}{\cts}{\re}$, the variable $\var$ is subject to the finite set $\cts$ of constraints ranging over $\cset$.
 
@@ -40,17 +42,34 @@ Let $\evSet$ denote a given non-empty set of events. We call \emph{trace} an ele
   \end{array}
  \]
 \end{definition}
+The following definition introduces the denotational semantics of trace expressions.
+It is parametric in the following two functions $\match$ and $\sol$:
+the first is a \emph{partial} function associating sets of events with atoms, while the second is a total three-valued function modeling constraint solving \cite{JAFFAR1998}.
+More precisely, $\match(\ev,\atom)$ is defined only iff $\ev$ is an event defined by $\atom$;
+in this case, the function returns the set of constraints $\cts$, with $\fv(\cts)\subseteq\fv(\atom)$, that must be satisfied for the atom to be considered as matching the event.
+If $\sol(\cts)=\true$, then $\cts$ is satisfiable, while it is unsatisfiable if $\sol(\cts)=\false$; finally, if $\sol(\cts)=\unknown$, then it is unknown whether $\cts$ is satisfiable or not.
+
+The function $\sol$ is assumed to \emph{agree} with the underlying constraint theory $\theory$.
+Let $\cts=\{\overline{\ct}\}$, with $\fv(\cts)=\{\overline{\var}\}$;
+if $\sol(\cts)=\true$ then $\theory\models\overline{\exists\var.\ct}$, and
+if $\sol(\cts)=\false$ then $\theory\models\neg\overline{\exists\var.\ct}$.
+The following conditions are assumed to hold: if $\match(\ev,\atom)=\cts$, then $\sol(\cts)\neq\false$, and if $\sol(\cts)=\false$ then $\sol(\subs{\cts}{\var}{\val})=\false$.
+
 \begin{definition}\label[definition]{def:sem}
+ Let $\vset_{\cts,\var}$ denote the set of values $\val$ s.t. $\sol(\subs{\cts}{\var}{\val})\neq\false$.
+
  The denotational semantics of trace expressions is defined by induction as follows:
  \[
   \begin{array}{l}
-   \sem{\none}=\emptyset\quad \sem{\eps}=\{\emptyTrace\} \quad \sem{\predSym(\overline{\val})}=\{\ev \mid \res(\ev,\predSym(\overline{\val}))=\emptyset\} \\
+   \sem{\none}=\emptyset\quad \sem{\eps}=\{\emptyTrace\} \quad \sem{\predSym(\overline{\val})}=\{\ev \mid \match(\ev,\predSym(\overline{\val}))=\emptyset\} \\
    \sem{\re_0\catop\re_1}=\sem{\re_0}\tracecatop\sem{\re_1}                                                 \quad
-   \sem{\re_0\andop\re_1}=\sem{\re_0}\cap\sem{\re_1}                                                                                                      \\ \sem{\re_0\orop\re_1}=\sem{\re_0}\cup\sem{\re_1}                                               \quad \sem{\re_0\shuffleop\re_1}=\sem{\re_0}\traceshuffleop\sem{\re_1} \quad \sem{\starop{\re_0}}=\starop{\sem{\re_0}}\\
-   \sem{\existOp{\var}{\cts}{\re}}=\bigcup_{\val'\in\{\val\in\evSet\mid \sol(\subs{\cts}{\var}{\val})\neq\false\}}\sem{\subs{\re}{\var}{\val'}}
+   \sem{\re_0\andop\re_1}=\sem{\re_0}\cap\sem{\re_1}                                                                                                        \\ \sem{\re_0\orop\re_1}=\sem{\re_0}\cup\sem{\re_1}                                               \quad \sem{\re_0\shuffleop\re_1}=\sem{\re_0}\traceshuffleop\sem{\re_1} \quad \sem{\starop{\re_0}}=\starop{\sem{\re_0}}\\
+   \sem{\existOp{\var}{\cts}{\re}}=\bigcup_{\val\in\vset_{\cts,\var}}\sem{\subs{\re}{\var}{\val}}
   \end{array}
  \]
 \end{definition}
+
+Note that in \cref{def:sem}, the semantics of an atom ($\atom=\predSym(\overline{\val})$) is defined only if it is ground; this implies that the semantics of open  trace expressions is undefined, although they are considered syntactically correct.
 
 \subsection{Operational semantics}
 The operational semantics of trace expressions is defined in terms of partial derivatives, which are defined by the labeled transition system in \cref{fig:parDer}.
@@ -60,7 +79,7 @@ The operational semantics of trace expressions is defined in terms of partial de
    \hasEps{\eps}=\hasEps{\starop{\re_0}}=\true                                                              \\                                                                                                      \hasEps{\none}=\hasEps{\ev}=\hasEps{\var}=\false \\
    \hasEps{\re_0\catop\re_1}=\hasEps{\re_0\andop\re_1}=\hasEps{\re_0}\conj\hasEps{\re_1}                    \\
    \hasEps{\re_0\orop\re_1}=\hasEps{\re_0}\disj\hasEps{\re_1}                                               \\ \hasEps{\existOp{\var}{\cts}{\re}}=\hasEps{\re} \\[4ex]
-   \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\res(\ev,\atom)=\cts}                                            \\[4ex]
+   \Rule{at}{}{\atom\parDer{\ev,\cts}\eps}{\match(\ev,\atom)=\cts}                                          \\[4ex]
    \Rule{l-cat}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_0\catop\re_1}{}\quad
    \Rule{r-cat}{\re_1\parDer{\ev,\cts}\re'_1}{\re_0\catop\re_1\parDer{\ev,\cts}\re'_1}{\hasEps{\re_0}=\eps} \\[4ex]
    \Rule{l-or}{\re_0\parDer{\ev,\cts}\re'_0}{\re_0\orop\re_1\parDer{\ev,\cts}\re'_0}{} \quad
@@ -92,8 +111,8 @@ In \rn{ex}, the notation $\excl{\var}{\cts'}$ denotes the subset of constraints 
 
 $\evSet=\{\pingEv(n),\pongEv(n) \mid n \in \natSet\}$
 
-$\res(\ev,\pongPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pongEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
+$\match(\ev,\pongPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pongEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
 
-$\res(\ev,\pingPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pingEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
+$\match(\ev,\pingPr(\eventTerm))=\{\eventTerm == n\}$ iff $\ev=\pingEv(n)$ and $\sol(\{\eventTerm == n\})\neq\false$
 
 $\starop{(\existOp{\var}{\emptyset}{\existOp{\avar}{\{\var < \avar\}}{\pingPr(\var)\shuffleop\pongPr(\avar)}})}$
