@@ -61,9 +61,9 @@ The following conditions are assumed to hold: if $\match(\ev,\atom)=\cts$, then 
  The denotational semantics of trace expressions is defined by induction as follows:
  \[
   \begin{array}{l}
-   \sem{\none}=\emptyset\quad \sem{\eps}=\{\emptyTrace\} \quad \sem{\predSym(\overline{\val})}=\{\ev \mid \match(\ev,\predSym(\overline{\val}))=\emptyset\} \\
+   \sem{\none}=\emptyset\quad \sem{\eps}=\{\emptyTrace\} \quad \sem{\predSym(\overline{\val})}=\{\ev \mid \match(\ev,\predSym(\overline{\val}))\equiv\emptyset\} \\
    \sem{\re_0\catop\re_1}=\sem{\re_0}\tracecatop\sem{\re_1}                                                 \quad
-   \sem{\re_0\andop\re_1}=\sem{\re_0}\cap\sem{\re_1}                                                                                                        \\ \sem{\re_0\orop\re_1}=\sem{\re_0}\cup\sem{\re_1}                                               \quad \sem{\re_0\shuffleop\re_1}=\sem{\re_0}\traceshuffleop\sem{\re_1} \quad \sem{\starop{\re_0}}=\starop{\sem{\re_0}}\\
+   \sem{\re_0\andop\re_1}=\sem{\re_0}\cap\sem{\re_1}                                                                                                             \\ \sem{\re_0\orop\re_1}=\sem{\re_0}\cup\sem{\re_1}                                               \quad \sem{\re_0\shuffleop\re_1}=\sem{\re_0}\traceshuffleop\sem{\re_1} \quad \sem{\starop{\re_0}}=\starop{\sem{\re_0}}\\
    \sem{\existOp{\var}{\cts}{\re}}=\bigcup_{\val\in\vset_{\cts,\var}}\sem{\subs{\re}{\var}{\val}}
   \end{array}
  \]
